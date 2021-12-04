@@ -1,0 +1,16 @@
+name: BetterHomes
+version: 1.0.0
+main: Electro\BetterHomes\BetterHomes
+api: 4.0.0
+author: Electro
+
+commands:
+  home:
+    usage: /home
+    description: Open Homes Form
+    permission: BetterHomes.cmd
+
+permissions:
+  BetterHomes.cmd:
+    description: Permission to use homes command
+    default: true
