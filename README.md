@@ -1,5 +1,5 @@
 # Information 
-- BetterHomes is a home plugin for PM4.
+- BetterHomes is a home plugin for PocketMine.
 # Features
 - Forms
 - Easy To Use
