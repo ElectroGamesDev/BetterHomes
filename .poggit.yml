@@ -3,6 +3,9 @@ build-by-default: true
 branches:
 - main
 projects:
-  BetterHomes:
+  BetterWarps:
     path: ""
+    libs:
+      - src: dktapps-pm-pl/pmforms/pmforms
+        version: ^2.0.0
 ...
