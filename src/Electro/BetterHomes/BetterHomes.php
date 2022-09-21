@@ -4,6 +4,7 @@ namespace Electro\BetterHomes;
 
 use dktapps\pmforms\CustomForm;
 use dktapps\pmforms\MenuForm;
+use dktapps\pmforms\ModalForm;
 use dktapps\pmforms\element\Input;
 use dktapps\pmforms\element\Dropdown;
 use dktapps\pmforms\CustomFormResponse;
@@ -91,11 +92,13 @@ class BetterHomes extends PluginBase implements Listener{
                 }
                 if ($selected == 2)
                 {
-                    $submitter->sendForm($this->homeRemoveForm($submitter));
+                    if (empty($this->homes[$submitter->getName()])) $submitter->sendForm($this->noHomesForm());
+                    else $submitter->sendForm($this->homeRemoveForm($submitter));
                 }
                 if ($selected == 0)
                 {
-                    $submitter->sendForm($this->homeTeleportForm($submitter));
+                    if (empty($this->homes[$submitter->getName()])) $submitter->sendForm($this->noHomesForm());
+                    else $submitter->sendForm($this->homeTeleportForm($submitter));
                 }
             }
         );
@@ -172,9 +175,22 @@ class BetterHomes extends PluginBase implements Listener{
             },
         );
     }
-
+    
+    private function noHomesForm() : MenuForm{
+        return new MenuForm(
+            "§lYou Have No Homes", /* title of the form */
+            "§cYou Do Not Have Any Homes!", /* body text, shown above the menu options */
+            [
+                /* menu option with no icon */
+                new MenuOption("Okay"),
+            ],
+            function(Player $submitter, int $selected) : void{
+            }
+        );
+    }
     public function saveData(Player $player)
     {
+        if (!file_exists($this->getDataFolder() . "Players/" . $player->getName() . ".yml") || !array_key_exists($player->getName(), $this->homes)) return;
         $playerHomes = new Config($this->getDataFolder() . "Players/" . $player->getName() . ".yml", Config::YAML);
         $playerHomes->set("Homes", $this->homes[$player->getName()]);
         $playerHomes->save();
